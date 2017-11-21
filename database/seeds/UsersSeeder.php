@@ -27,12 +27,14 @@ class UsersSeeder extends Seeder
                 [
                     'name' => 'Office 1',
                     'email' => 'office1@test.com',
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
+                    'admin' => 0
                 ],
                 [
                     'name' => 'Office 2',
                     'email' => 'office2@test.com',
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
+                    'admin' => 0
                 ],
             ]);
         }
