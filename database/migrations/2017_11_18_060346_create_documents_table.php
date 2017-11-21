@@ -19,7 +19,7 @@ class CreateDocumentsTable extends Migration
             $table->string('subject');
             $table->mediumText('detail');
             $table->smallInteger('priority')->comment('0 = normal; 1 = urgent; 2 = high;')->default(0);
-            $table->integer('deparment');
+            $table->integer('department');
             $table->integer('initiator');
             $table->mediumText('attachment')->nullable();
             $table->mediumText('comment');

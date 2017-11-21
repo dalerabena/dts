@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Document;
+use App\RefPriority;
+use App\User;
+use App\Track;
 use Illuminate\Http\Request;
+use Auth;
+use DB;
 
 class DocumentController extends Controller
 {
@@ -24,7 +29,12 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        return view('documents.create');
+        $priorities = RefPriority::all()->pluck('desc', 'id');
+        $users = User::all()->pluck('name', 'id');
+
+        return view('documents.create')
+            ->with('priorities', $priorities)
+            ->with('users', $users);
     }
 
     /**
@@ -35,7 +45,68 @@ class DocumentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $validation = $this->validate($request, [
+            'reference_number' => 'required',
+            'subject' => 'required',
+            'details' => 'required',
+            'priority' => 'required',
+            'department' => 'required',
+            'comments' => 'required'
+            // 'attachment' => 'required'
+        ]);
+
+        if ($validation) {
+            DB::beginTransaction();
+            // $document = new Document();
+            // $document->reference_number = $request->reference_number;
+            // $document->subject = $request->subject;
+            // $document->detail = $request->details;
+            // $document->priority = $request->priority;
+            // $document->department = $request->department;
+            // $document->initiator = Auth::id();
+            // $document->comment = $request->comments;
+            // // $document->attachment = $request->document;
+            //
+            // $result = $document->save();
+
+            try {
+                $document = Document::create([
+                    'reference_number' => $request->reference_number,
+                    'subject' => $request->subject,
+                    'detail' => $request->details,
+                    'priority' => $request->priority,
+                    'department' => $request->department,
+                    'initiator' => Auth::id(),
+                    'comment' => $request->comments
+                ]);
+            } catch (\ValidationException $e) {
+                DB::rollback();
+                $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 1');
+                return redirect()->route('home');
+            }
+
+            try {
+                $track = Track::create([
+                    'document_id' => $document->id,
+                    'assigned_to' => Auth::id(),
+                    'forwarded_to' => $request->department,
+                    'comment' => $request->comments,
+                    'opened_by' => Auth::id()
+                ]);
+            } catch (\ValidationException $e) {
+                DB::rollback();
+                $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 2');
+                return redirect()->route('home');
+            }
+
+
+
+            DB::commit();
+        }
+
+        $request->session()->flash('alert-success', '<strong>Success!</strong> New tracking has been added.');
+        return redirect()->route('home');
     }
 
     /**

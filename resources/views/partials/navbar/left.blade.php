@@ -1,7 +1,7 @@
 @guest
     &nbsp;
 @else
-    <li><a href="#">New Tracking</a></li>
+    <li><a href="{{ route('documents.create') }}">New Tracking</a></li>
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             Reports <span class="caret"></span>
