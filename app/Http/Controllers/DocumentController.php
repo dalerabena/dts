@@ -57,13 +57,13 @@ class DocumentController extends Controller
             'details' => 'required',
             'priority' => 'required',
             'department' => 'required',
-            'comments' => 'required'
+            'comments' => 'required',
             'attachment' => 'required'
         ]);
 
         if ($validation) {
             DB::beginTransaction();
-            
+
             try {
                 $document = Document::create([
                     'reference_number' => $request->reference_number,
