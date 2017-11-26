@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Document;
+use App\DocumentAttachment;
 use App\RefPriority;
 use App\User;
 use App\Track;
@@ -19,7 +20,11 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        //
+        $documents = DB::table('documents')
+            ->rightJoin('tracks', 'documents.id', '=', 'tracks.document_id')
+            ->orderBy('tracks.created_at', 'desc')
+            ->first();
+        return view('documents.index');
     }
 
     /**
@@ -53,23 +58,12 @@ class DocumentController extends Controller
             'priority' => 'required',
             'department' => 'required',
             'comments' => 'required'
-            // 'attachment' => 'required'
+            'attachment' => 'required'
         ]);
 
         if ($validation) {
             DB::beginTransaction();
-            // $document = new Document();
-            // $document->reference_number = $request->reference_number;
-            // $document->subject = $request->subject;
-            // $document->detail = $request->details;
-            // $document->priority = $request->priority;
-            // $document->department = $request->department;
-            // $document->initiator = Auth::id();
-            // $document->comment = $request->comments;
-            // // $document->attachment = $request->document;
-            //
-            // $result = $document->save();
-
+            
             try {
                 $document = Document::create([
                     'reference_number' => $request->reference_number,
@@ -80,6 +74,17 @@ class DocumentController extends Controller
                     'initiator' => Auth::id(),
                     'comment' => $request->comments
                 ]);
+
+                foreach ($request->attachment as $key => $attachment) {
+                    $filename = $attachment->getClientOriginalName();
+                    $path = $attachment->store('attachments');
+                    DocumentAttachment::create([
+                        'document_id' => $document->id,
+                        'filename' => $filename,
+                        'path' => $path
+                    ]);
+                }
+
             } catch (\ValidationException $e) {
                 DB::rollback();
                 $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 1');

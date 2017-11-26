@@ -109,7 +109,7 @@
                             <label for="attachment" class="col-md-4 control-label">Attachment</label>
 
                             <div class="col-md-6">
-                                {!! Form::file('attachment') !!}
+                                {!! Form::file('attachment[]', ['multiple']) !!}
 
                                 @if ($errors->has('attachment'))
                                     <span class="help-block">

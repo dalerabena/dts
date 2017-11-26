@@ -34,7 +34,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::resource('documents', 'DocumentController', [
-        'only' => ['create', 'store']
+        'only' => ['create', 'store', 'index']
     ]);
 });
 
