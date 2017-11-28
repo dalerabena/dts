@@ -19,8 +19,6 @@ class CreateTracksTable extends Migration
             $table->integer('assigned_to');
             $table->string('forwarded_to');
             $table->mediumText('comment');
-            $table->smallInteger('status')->comment('0 = open; 1 = closed;')->default(0);
-            $table->integer('opened_by')->nullable();
             $table->integer('closed_by')->nullable();
             $table->timestamps();
         });

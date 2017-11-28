@@ -33,9 +33,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'HomeController@index')->name('home');
 
-    Route::resource('documents', 'DocumentController', [
-        'only' => ['create', 'store', 'index']
-    ]);
+    Route::resource('documents', 'DocumentController');
 });
 
 Route::group(['middleware' => 'admin'], function() {

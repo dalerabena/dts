@@ -10,6 +10,7 @@ use App\Track;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use Hashids;
 
 class DocumentController extends Controller
 {
@@ -37,9 +38,12 @@ class DocumentController extends Controller
         $priorities = RefPriority::all()->pluck('desc', 'id');
         $users = User::all()->pluck('name', 'id');
 
-        return view('documents.create')
-            ->with('priorities', $priorities)
-            ->with('users', $users);
+        $arr = [
+            'priorities' => $priorities,
+            'users' => $users
+        ];
+
+        return view('documents.create', $arr);
     }
 
     /**
@@ -66,13 +70,13 @@ class DocumentController extends Controller
 
             try {
                 $document = Document::create([
+                    'user_id' => Auth::id(),
                     'reference_number' => $request->reference_number,
                     'subject' => $request->subject,
                     'detail' => $request->details,
                     'priority' => $request->priority,
-                    'department' => $request->department,
-                    'initiator' => Auth::id(),
-                    'comment' => $request->comments
+                    'department' => $request->department,                    
+                    'initial_comment' => $request->comments
                 ]);
 
                 foreach ($request->attachment as $key => $attachment) {
@@ -96,8 +100,7 @@ class DocumentController extends Controller
                     'document_id' => $document->id,
                     'assigned_to' => Auth::id(),
                     'forwarded_to' => $request->department,
-                    'comment' => $request->comments,
-                    'opened_by' => Auth::id()
+                    'comment' => $request->comments
                 ]);
             } catch (\ValidationException $e) {
                 DB::rollback();
@@ -131,9 +134,21 @@ class DocumentController extends Controller
      * @param  \App\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function edit(Document $document)
+    public function edit($id)
     {
-        //
+        $id = Hashids::decode($id)[0];
+        $document = Document::find($id);
+
+        $priorities = RefPriority::all()->pluck('desc', 'id');
+        $users = User::all()->pluck('name', 'id');
+        
+        $arr = [
+            'document' => $document,
+            'priorities' => $priorities,
+            'users' => $users
+        ];
+
+        return view('documents.edit', $arr);
     }
 
     /**

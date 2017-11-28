@@ -14,6 +14,40 @@
                     <a class="btn btn-primary btn-lg" href="#" role="button">Click here to download the Users's Manual</a>
                 </p>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Open documents
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th width="20%">Reference Number</th>
+                                <th>Subject</th>
+                                <th>Date Created</th>
+                                <th>Priority</th>
+                                <th width="20%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if($documents->count() > 0)
+                                @foreach($documents as $document)
+                                    <tr>
+                                        <td>{{ $document->reference_number }}</td>
+                                        <td>{{ $document->subject }}</td>
+                                        <td>{{ $document->created_at }}</td>
+                                        <td>{{ $document->priority }}</td>
+                                        <td>
+                                            <a href="{{ route('documents.edit', [ Hashids::encode($document->id) ]) }}" class="btn btn-primary">Update</a>
+                                            <a href="#" class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
