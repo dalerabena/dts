@@ -5,7 +5,7 @@
     <div class="row">
         @include('partials.message')
         <div class="col-md-12">
-            <div class="jumbotron">
+            {{-- <div class="jumbotron">
                 <h1 class="display-3">Hello, world!</h1>
                 <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
                 <hr class="my-4">
@@ -13,7 +13,7 @@
                 <p class="lead">
                     <a class="btn btn-primary btn-lg" href="#" role="button">Click here to download the Users's Manual</a>
                 </p>
-            </div>
+            </div> --}}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Open documents
@@ -38,8 +38,8 @@
                                         <td>{{ $document->created_at }}</td>
                                         <td>{{ $document->priority }}</td>
                                         <td>
-                                            <a href="{{ route('documents.edit', [ Hashids::encode($document->id) ]) }}" class="btn btn-primary">Update</a>
-                                            <a href="#" class="btn btn-danger">Delete</a>
+                                            <a href="{{ route('documents.show', [ Hashids::encode($document->id) ]) }}" class="btn btn-primary btn-sm">View</a>
+                                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
                                         </td>
                                     </tr>
                                 @endforeach

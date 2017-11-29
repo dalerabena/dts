@@ -6,7 +6,7 @@ use App\Document;
 use App\DocumentAttachment;
 use App\RefPriority;
 use App\User;
-use App\Track;
+use App\History;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
@@ -22,8 +22,8 @@ class DocumentController extends Controller
     public function index()
     {
         $documents = DB::table('documents')
-            ->rightJoin('tracks', 'documents.id', '=', 'tracks.document_id')
-            ->orderBy('tracks.created_at', 'desc')
+            ->rightJoin('history', 'documents.id', '=', 'history.document_id')
+            ->orderBy('history.created_at', 'desc')
             ->first();
         return view('documents.index');
     }
@@ -60,9 +60,8 @@ class DocumentController extends Controller
             'subject' => 'required',
             'details' => 'required',
             'priority' => 'required',
-            'department' => 'required',
             'comments' => 'required',
-            'attachment' => 'required'
+            // 'attachment' => 'required'
         ]);
 
         if ($validation) {
@@ -75,18 +74,19 @@ class DocumentController extends Controller
                     'subject' => $request->subject,
                     'detail' => $request->details,
                     'priority' => $request->priority,
-                    'department' => $request->department,                    
-                    'initial_comment' => $request->comments
+                    'comment' => $request->comments
                 ]);
 
-                foreach ($request->attachment as $key => $attachment) {
-                    $filename = $attachment->getClientOriginalName();
-                    $path = $attachment->store('attachments');
-                    DocumentAttachment::create([
-                        'document_id' => $document->id,
-                        'filename' => $filename,
-                        'path' => $path
-                    ]);
+                if (!is_null($request->attachment)) {
+                    foreach ($request->attachment as $key => $attachment) {
+                        $filename = $attachment->getClientOriginalName();
+                        $path = $attachment->store('attachments');
+                        DocumentAttachment::create([
+                            'document_id' => $document->id,
+                            'filename' => $filename,
+                            'path' => $path
+                        ]);
+                    }
                 }
 
             } catch (\ValidationException $e) {
@@ -96,25 +96,22 @@ class DocumentController extends Controller
             }
 
             try {
-                $track = Track::create([
+                $history = History::create([
                     'document_id' => $document->id,
-                    'assigned_to' => Auth::id(),
-                    'forwarded_to' => $request->department,
-                    'comment' => $request->comments
+                    'action' => 0,
+                    'action_by' => Auth::id()
                 ]);
             } catch (\ValidationException $e) {
                 DB::rollback();
                 $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 2');
-                return redirect()->route('home');
+                return redirect()->route('documents.show', [Hashids::encode($document->id)]);
             }
-
-
 
             DB::commit();
         }
 
-        $request->session()->flash('alert-success', '<strong>Success!</strong> New tracking has been added.');
-        return redirect()->route('home');
+        $request->session()->flash('alert-success', '<strong>Success!</strong> New document has been added.');
+        return redirect()->route('documents.show', [Hashids::encode($document->id)]);
     }
 
     /**
@@ -123,9 +120,23 @@ class DocumentController extends Controller
      * @param  \App\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function show(Document $document)
+    public function show($id)
     {
-        //
+        $id = Hashids::decode($id)[0];
+        $document = Document::find($id);
+        $document_status = $document->history()->orderBy('created_at', 'desc')->first()->action;
+
+        $priorities = RefPriority::all()->pluck('desc', 'id');
+        $users = User::all()->pluck('name', 'id');
+
+        $arr = [
+            'document' => $document,
+            'priorities' => $priorities,
+            'users' => $users,
+            'document_status' => $document_status
+        ];
+
+        return view('documents.edit', $arr);
     }
 
     /**
@@ -134,21 +145,9 @@ class DocumentController extends Controller
      * @param  \App\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        $id = Hashids::decode($id)[0];
-        $document = Document::find($id);
-
-        $priorities = RefPriority::all()->pluck('desc', 'id');
-        $users = User::all()->pluck('name', 'id');
-        
-        $arr = [
-            'document' => $document,
-            'priorities' => $priorities,
-            'users' => $users
-        ];
-
-        return view('documents.edit', $arr);
+        //
     }
 
     /**
@@ -158,9 +157,54 @@ class DocumentController extends Controller
      * @param  \App\Document  $document
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Document $document)
+    public function update(Request $request, $id)
     {
-        //
+        $validation = $this->validate($request, [
+            'reference_number' => 'required',
+            'subject' => 'required',
+            'details' => 'required',
+            'comments' => 'required'
+        ]);
+
+        if ($validation) {
+            $id = Hashids::decode($id)[0];
+            $document = Document::find($id);
+
+            DB::beginTransaction();
+
+            try {
+                $history = History::create([
+                    'document_id' => $document->id,
+                    'reference_number' => $document->reference_number,
+                    'subject' => $document->subject,
+                    'detail' => $document->detail,
+                    'comment' => $document->comment,
+                    'action' => 1,
+                    'action_by' => Auth::id()
+                ]);
+            } catch (\ValidationException $e) {
+                DB::rollback();
+                $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 2');
+                return redirect()->route('documents.show', [Hashids::encode($document->id)]);
+            }
+
+            try {
+                $document->reference_number = $request->reference_number;
+                $document->subject = $request->subject;
+                $document->detail = $request->details;
+                $document->comment = $request->comments;
+                $document->save();
+            } catch (\ValidationException $e) {
+                DB::rollback();
+                $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 1');
+                return redirect()->route('home');
+            }
+
+            DB::commit();
+        }
+
+        $request->session()->flash('alert-success', '<strong>Success!</strong> New document has been updated.');
+        return redirect()->route('documents.show', [Hashids::encode($document->id)]);
     }
 
     /**
@@ -172,5 +216,28 @@ class DocumentController extends Controller
     public function destroy(Document $document)
     {
         //
+    }
+
+    public function close(Request $request, $id) {
+        $id = Hashids::decode($id)[0];
+
+        DB::beginTransaction();
+
+        try {
+            $history = History::create([
+                'document_id' => $id,
+                'action' => 3,
+                'action_by' => Auth::id()
+            ]);
+        } catch (\ValidationException $e) {
+            DB::rollback();
+            $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 2');
+            return redirect()->route('documents.show', [Hashids::encode($id)]);
+        }
+
+        DB::commit();
+
+        $request->session()->flash('alert-success', '<strong>Success!</strong> Document has been closed.');
+        return redirect()->route('documents.show', [Hashids::encode($id)]);
     }
 }

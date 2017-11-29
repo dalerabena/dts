@@ -4,15 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Track extends Model
+class History extends Model
 {
+    protected $table = 'history';
+
     protected $fillable = [
         'document_id',
-        'assigned_to',
         'forwarded_to',
+        'reference_number',
+        'subject',
+        'detail',
         'comment',
-        'status',
-        'opened_by',
-        'closed_by'
+        'action',
+        'action_by'
     ];
 }

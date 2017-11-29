@@ -20,9 +20,7 @@ class CreateDocumentsTable extends Migration
             $table->string('subject');
             $table->mediumText('detail');
             $table->smallInteger('priority')->comment('0 = normal; 1 = urgent; 2 = high;')->default(0);
-            $table->integer('department');
-            $table->mediumText('initial_comment');
-            $table->smallInteger('status')->comment('0 = open; 1 = closed;')->default(0);
+            $table->mediumText('comment');
             $table->timestamps();
         });
     }

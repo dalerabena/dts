@@ -4,13 +4,13 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <table width="100%">
                         <tr>
                             <td>
-                                New Tracking
+                                Document Details
                                 <span class="badge badge-primary pull-right">Status: Open</span>
                             </td>
                         </tr>
@@ -77,20 +77,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
-                            <label for="department" class="col-md-4 control-label">Department</label>
-
-                            <div class="col-md-6">
-                                {!! Form::select('department', $users, null, ['class' => 'form-control']) !!}
-
-                                @if ($errors->has('department'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('department') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
                         <div class="form-group{{ $errors->has('comments') ? ' has-error' : '' }}">
                             <label for="comments" class="col-md-4 control-label">Comments</label>
 
@@ -104,6 +90,20 @@
                                 @endif
                             </div>
                         </div>
+
+                        {{-- <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
+                            <label for="department" class="col-md-4 control-label">Department</label>
+
+                            <div class="col-md-6">
+                                {!! Form::select('department', $users, null, ['class' => 'form-control']) !!}
+
+                                @if ($errors->has('department'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('department') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div> --}}
 
                         <div class="form-group{{ $errors->has('attachment') ? ' has-error' : '' }}">
                             <label for="attachment" class="col-md-4 control-label">Attachment</label>

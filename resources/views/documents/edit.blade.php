@@ -4,28 +4,34 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        @include('partials.message')
+        <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <table width="100%">
                         <tr>
                             <td>
                                 Update Tracking
-                                <span class="badge badge-primary pull-right">Status: Open</span>
+                                {{-- <span class="badge badge-primary">Status: Open</span> --}}
+                                <div class="pull-right">
+                                    <a href="#" class="btn btn-success btn-sm">Forward </a>
+                                    @if ($document_status != 3)
+                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#closeDocument">Mark as Closed</button>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     </table>
                 </div>
 
                 <div class="panel-body">
-                    @include('partials.message')
                     {!! Form::open(['route' => ['documents.update', Hashids::encode($document->id)], 'method' => 'put', 'class' => 'form-horizontal', 'files' => 'true']) !!}
 
                         <div class="form-group{{ $errors->has('reference_number') ? ' has-error' : '' }}">
                             <label for="reference_number" class="col-md-4 control-label">Reference Number</label>
 
                             <div class="col-md-6">
-                                {!! Form::text('reference_number', $document->reference_number, ['class' => 'form-control']) !!}
+                                {!! Form::text('reference_number', $document->reference_number, ['class' => 'form-control', $document_status == 3 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('reference_number'))
                                     <span class="help-block">
@@ -35,11 +41,25 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
+                            <label for="date" class="col-md-4 control-label">Date</label>
+
+                            <div class="col-md-6">
+                                {!! Form::text('date', \Carbon\Carbon::parse($document->created_at)->toDayDateTimeString(), ['class' => 'form-control', 'readonly']) !!}
+
+                                @if ($errors->has('date'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('date') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('subject') ? ' has-error' : '' }}">
                             <label for="subject" class="col-md-4 control-label">Subject</label>
 
                             <div class="col-md-6">
-                                {!! Form::text('subject', $document->subject, ['class' => 'form-control']) !!}
+                                {!! Form::text('subject', $document->subject, ['class' => 'form-control', $document_status == 3 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('subject'))
                                     <span class="help-block">
@@ -53,7 +73,7 @@
                             <label for="details" class="col-md-4 control-label">Details</label>
 
                             <div class="col-md-6">
-                                {!! Form::textarea('details', $document->detail, ['class' => 'form-control', 'rows' => '3']) !!}
+                                {!! Form::textarea('details', $document->detail, ['class' => 'form-control', 'rows' => '3', $document_status == 3 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('details'))
                                     <span class="help-block">
@@ -67,7 +87,7 @@
                             <label for="priority" class="col-md-4 control-label">Priority</label>
 
                             <div class="col-md-6">
-                                {!! Form::select('priority', $priorities, $document->priority, ['class' => 'form-control']) !!}
+                                {!! Form::select('priority', $priorities, $document->priority, ['class' => 'form-control', 'disabled']) !!}
 
                                 @if ($errors->has('priority'))
                                     <span class="help-block">
@@ -77,7 +97,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
+                        {{-- <div class="form-group{{ $errors->has('department') ? ' has-error' : '' }}">
                             <label for="department" class="col-md-4 control-label">Department</label>
 
                             <div class="col-md-6">
@@ -89,13 +109,13 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group{{ $errors->has('comments') ? ' has-error' : '' }}">
                             <label for="comments" class="col-md-4 control-label">Comments</label>
 
                             <div class="col-md-6">
-                                {!! Form::textarea('comments', $document->initial_comment, ['class' => 'form-control', 'rows' => '3']) !!}
+                                {!! Form::textarea('comments', $document->comment, ['class' => 'form-control', 'rows' => '3', $document_status == 3 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
@@ -119,95 +139,49 @@
                             </div>
                         </div> --}}
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Save
-                                </button>
-                                <a href="#" class="btn btn-success">Forward </a>
-                                <a href="#" class="btn btn-warning">Mark as Closed</a>
-                                <a href="{{ route('home') }}" class="btn btn-default">Cancel</a>
+                        @if ($document_status != 3)
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Save
+                                    </button>
+                                    <a href="{{ route('home') }}" class="btn btn-default">Cancel</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     {!! Form::close() !!}
                 </div>
             </div>
         </div>
-        <div class="col col-md-4">
+        <div class="col col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Comments
+                    History
                 </div>
                 <div class="panel-body" style="min-height: 300px; max-height: 450px; overflow-y: scroll;">
-                    <table class="table">
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
-                        <tr>
-                            <td>asdfas</td>
-                            <td>asdfsdf</td>
-                        </tr>
+                    <table class="table table-striped table-hover">
+                        @foreach ($document->history as $key => $value)
+                            <tr>
+                                <td>
+                                    @if ($value->action == 0)
+                                        Document created at {{ $value->created_at }}
+                                    @elseif ($value->action == 1)
+                                        Document updated by {{ $value->action_by }} at {{ $value->created_at }} <br>
+                                        Previous comment: {{ $value->comment }} {{ $value->created_at }}
+                                    @elseif ($value->action == 2)
+                                        Document forwarded by {{ $value->action_by }} to {{ $value->forwarded_to }}
+                                    @elseif ($value->action == 3)
+                                        Document closed by {{ $value->action_by }} at {{ $value->created_at }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     </table>
                 </div>
             </div>
         </div>
+
+        @include('documents.partials.modal')
     </div>
 </div>
 @endsection

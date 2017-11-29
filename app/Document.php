@@ -12,11 +12,14 @@ class Document extends Model
         'subject',
         'detail',
         'priority',
-        'department',
-        'initial_comment'
+        'comment'
     ];
 
     public function attachments() {
         return $this->hasMany('\App\DocumentAttachment', 'document_id');
+    }
+
+    public function history() {
+        return $this->hasMany('\App\History', 'document_id');
     }
 }
