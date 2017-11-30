@@ -19,8 +19,9 @@ class CreateDocumentsTable extends Migration
             $table->string('reference_number');
             $table->string('subject');
             $table->mediumText('detail');
-            $table->smallInteger('priority')->comment('0 = normal; 1 = urgent; 2 = high;')->default(0);
             $table->mediumText('comment');
+            $table->smallInteger('priority')->default(0);
+            $table->smallInteger('status')->comment('0 = open; 1 = close;')->default(0);
             $table->timestamps();
         });
     }

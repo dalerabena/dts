@@ -11,8 +11,9 @@ class Document extends Model
         'reference_number',
         'subject',
         'detail',
+        'comment',
         'priority',
-        'comment'
+        'status'
     ];
 
     public function attachments() {
@@ -21,5 +22,9 @@ class Document extends Model
 
     public function history() {
         return $this->hasMany('\App\History', 'document_id');
+    }
+
+    public function refPriority() {
+        return $this->hasOne('\App\RefPriority', 'id', 'priority');
     }
 }

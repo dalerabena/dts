@@ -34,7 +34,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::resource('documents', 'DocumentController');
-    Route::get('documents/{id}/close', 'DocumentController@close')->name('document.close');
+    Route::put('documents/{id}/close', 'DocumentController@close')->name('document.close');
+    Route::put('documents/{id}/forward', 'DocumentController@forward')->name('document.forward');
 });
 
 Route::group(['middleware' => 'admin'], function() {

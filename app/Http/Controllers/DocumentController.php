@@ -19,13 +19,33 @@ class DocumentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $documents = DB::table('documents')
-            ->rightJoin('history', 'documents.id', '=', 'history.document_id')
-            ->orderBy('history.created_at', 'desc')
-            ->first();
-        return view('documents.index');
+        $documents = Document::when(isset($request->reference_number), function($query) use($request) {
+                        $query->where('reference_number', 'like', '%' . $request->reference_number . '%');
+                    })->when(isset($request->subject), function($query) use($request) {
+                        $query->where('subject', 'like', '$' . $request->subject . '%');
+                    })->when(isset($request->date_created), function($query) use($request) {
+                        $query->where('created_at', '=', $request->date_created);
+                    })->when(isset($request->priority), function($query) use($request) {
+                        $query->where('priority', '=', $request->priority);
+                    })->when(isset($request->status), function($query) use($request) {
+                        $query->where('status', '=', $request->status);
+                    })->get();
+
+        $priorities = RefPriority::all()->pluck('desc', 'id');
+        $status = [
+            0 => 'Open',
+            1 => 'Closed'
+        ];
+
+        $arr = [
+            'documents' => $documents,
+            'priorities' => $priorities,
+            'status' => $status
+        ];
+
+        return view('documents.index', $arr);
     }
 
     /**
@@ -224,6 +244,11 @@ class DocumentController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $document = Document::find($id);
+            $document->status = 1;
+            $document->save();
+
             $history = History::create([
                 'document_id' => $id,
                 'action' => 3,
@@ -231,13 +256,36 @@ class DocumentController extends Controller
             ]);
         } catch (\ValidationException $e) {
             DB::rollback();
-            $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 2');
+            $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 1');
             return redirect()->route('documents.show', [Hashids::encode($id)]);
         }
 
         DB::commit();
 
         $request->session()->flash('alert-success', '<strong>Success!</strong> Document has been closed.');
+        return redirect()->route('documents.show', [Hashids::encode($id)]);
+    }
+
+    public function forward(Request $request, $id) {
+        $id = Hashids::decode($id)[0];
+        DB::beginTransaction();
+
+        try {
+            $history = History::create([
+                'document_id' => $id,
+                'forwarded_to' => $request->forward_to,
+                'action' => 2,
+                'action_by' => Auth::id()
+            ]);
+        } catch (\ValidationException $e) {
+            DB::rollback();
+            $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Error 1');
+            return redirect()->route('documents.show', [Hashids::encode($id)]);
+        }
+
+        DB::commit();
+
+        $request->session()->flash('alert-success', '<strong>Success!</strong> Document has been forwarded.');
         return redirect()->route('documents.show', [Hashids::encode($id)]);
     }
 }

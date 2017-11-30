@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-8">
             <div class="panel panel-default">
@@ -128,6 +128,20 @@
                             </div>
                         </div>
                     {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    History
+                </div>
+                <div class="panel-body" style="min-height: 300px; max-height: 450px; overflow-y: scroll;">
+                    <table class="table table-striped table-hover">
+                        <tr>
+                            <td>No history to display.</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>

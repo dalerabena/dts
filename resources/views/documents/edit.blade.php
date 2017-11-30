@@ -2,20 +2,29 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        @include('partials.message')
+        <div class="col-lg-12">
+            @include('partials.message')
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <table width="100%">
                         <tr>
                             <td>
-                                Update Tracking
+                                @if ($document->status == 0)
+                                    Update Document
+                                @elseif ($document->status == 1)
+                                    Document Details
+                                @endif
                                 {{-- <span class="badge badge-primary">Status: Open</span> --}}
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-success btn-sm">Forward </a>
-                                    @if ($document_status != 3)
+                                    @if ($document->status != 1)
+                                        {{-- <a href="#" class="btn btn-success btn-sm">Forward </a> --}}
+                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#forwardDocument">Forward</button>
                                         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#closeDocument">Mark as Closed</button>
                                     @endif
                                 </div>
@@ -31,7 +40,7 @@
                             <label for="reference_number" class="col-md-4 control-label">Reference Number</label>
 
                             <div class="col-md-6">
-                                {!! Form::text('reference_number', $document->reference_number, ['class' => 'form-control', $document_status == 3 ? 'readonly' : '' ]) !!}
+                                {!! Form::text('reference_number', $document->reference_number, ['class' => 'form-control', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('reference_number'))
                                     <span class="help-block">
@@ -59,7 +68,7 @@
                             <label for="subject" class="col-md-4 control-label">Subject</label>
 
                             <div class="col-md-6">
-                                {!! Form::text('subject', $document->subject, ['class' => 'form-control', $document_status == 3 ? 'readonly' : '' ]) !!}
+                                {!! Form::text('subject', $document->subject, ['class' => 'form-control', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('subject'))
                                     <span class="help-block">
@@ -73,7 +82,7 @@
                             <label for="details" class="col-md-4 control-label">Details</label>
 
                             <div class="col-md-6">
-                                {!! Form::textarea('details', $document->detail, ['class' => 'form-control', 'rows' => '3', $document_status == 3 ? 'readonly' : '' ]) !!}
+                                {!! Form::textarea('details', $document->detail, ['class' => 'form-control', 'rows' => '3', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('details'))
                                     <span class="help-block">
@@ -115,7 +124,7 @@
                             <label for="comments" class="col-md-4 control-label">Comments</label>
 
                             <div class="col-md-6">
-                                {!! Form::textarea('comments', $document->comment, ['class' => 'form-control', 'rows' => '3', $document_status == 3 ? 'readonly' : '' ]) !!}
+                                {!! Form::textarea('comments', $document->comment, ['class' => 'form-control', 'rows' => '3', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('comments'))
                                     <span class="help-block">
@@ -139,13 +148,13 @@
                             </div>
                         </div> --}}
 
-                        @if ($document_status != 3)
+                        @if ($document->status != 1)
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
                                         Save
                                     </button>
-                                    <a href="{{ route('home') }}" class="btn btn-default">Cancel</a>
+                                    {{-- <a href="{{ route('home') }}" class="btn btn-default">Cancel</a> --}}
                                 </div>
                             </div>
                         @endif
@@ -164,14 +173,14 @@
                             <tr>
                                 <td>
                                     @if ($value->action == 0)
-                                        Document created at {{ $value->created_at }}
+                                        Document created by {{ $value->user->name }} at {{ \Carbon\Carbon::parse($value->created_at)->toDayDateTimeString() }}
                                     @elseif ($value->action == 1)
-                                        Document updated by {{ $value->action_by }} at {{ $value->created_at }} <br>
-                                        Previous comment: {{ $value->comment }} {{ $value->created_at }}
+                                        Document updated by {{ $value->user->name }} at {{ \Carbon\Carbon::parse($value->created_at)->toDayDateTimeString() }} <br>
+                                        Previous comment: {{ $value->comment }} {{ \Carbon\Carbon::parse($value->created_at)->toDayDateTimeString() }}
                                     @elseif ($value->action == 2)
-                                        Document forwarded by {{ $value->action_by }} to {{ $value->forwarded_to }}
+                                        Document forwarded to {{ $value->forwarded_to }} at {{ \Carbon\Carbon::parse($value->created_at)->toDayDateTimeString() }}
                                     @elseif ($value->action == 3)
-                                        Document closed by {{ $value->action_by }} at {{ $value->created_at }}
+                                        Document closed by {{ $value->user->name }} at {{ \Carbon\Carbon::parse($value->created_at)->toDayDateTimeString() }}
                                     @endif
                                 </td>
                             </tr>

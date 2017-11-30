@@ -18,4 +18,8 @@ class History extends Model
         'action',
         'action_by'
     ];
+
+    public function user() {
+        return $this->belongsTo('\App\User', 'action_by');
+    }
 }
