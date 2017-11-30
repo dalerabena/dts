@@ -24,9 +24,9 @@ class DocumentController extends Controller
         $documents = Document::when(isset($request->reference_number), function($query) use($request) {
                         $query->where('reference_number', 'like', '%' . $request->reference_number . '%');
                     })->when(isset($request->subject), function($query) use($request) {
-                        $query->where('subject', 'like', '$' . $request->subject . '%');
+                        $query->where('subject', 'like', '%' . $request->subject . '%');
                     })->when(isset($request->date_created), function($query) use($request) {
-                        $query->where('created_at', '=', $request->date_created);
+                        $query->where('created_at', 'like', '%' . $request->date_created . '%');
                     })->when(isset($request->priority), function($query) use($request) {
                         $query->where('priority', '=', $request->priority);
                     })->when(isset($request->status), function($query) use($request) {
@@ -156,7 +156,7 @@ class DocumentController extends Controller
             'document_status' => $document_status
         ];
 
-        return view('documents.edit', $arr);
+        return view('documents.show', $arr);
     }
 
     /**

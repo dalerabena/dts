@@ -14,7 +14,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('date_created', 'Date Created') !!}
-                {!! Form::date('date_created', null, ['class' => 'form-control']) !!}
+                {!! Form::text('date_created', null, ['class' => 'form-control', 'data-provide' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd', 'placeholder' => 'yyyy-mm-dd']) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('priority', 'Priority') !!}

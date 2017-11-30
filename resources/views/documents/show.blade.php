@@ -132,6 +132,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="comments" class="col-md-3 control-label">Attachments</label>
+
+                            <div class="col-md-8">
+                                <table>
+                                    @foreach ($document->attachments as $attachment)
+                                        <tr>
+                                            <td>
+                                                <a href="{{ asset("storage/$attachment->path") }}" target="_blank">{{ $attachment->filename }}</a>
+                                            </td>
+                                        </tr>        
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
+
                         {{-- <div class="form-group{{ $errors->has('attachment') ? ' has-error' : '' }}">
                             <label for="attachment" class="col-md-4 control-label">Attachment</label>
 
