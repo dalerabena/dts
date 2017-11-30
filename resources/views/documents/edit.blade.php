@@ -17,17 +17,15 @@
                             <td>
                                 @if ($document->status == 0)
                                     Update Document
-                                @elseif ($document->status == 1)
-                                    Document Details
-                                @endif
-                                {{-- <span class="badge badge-primary">Status: Open</span> --}}
-                                <div class="pull-right">
-                                    @if ($document->status != 1)
-                                        {{-- <a href="#" class="btn btn-success btn-sm">Forward </a> --}}
+                                    <div class="pull-right">
                                         <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#forwardDocument">Forward</button>
                                         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#closeDocument">Mark as Closed</button>
-                                    @endif
-                                </div>
+                                        <span class="badge badge-primary">Status: Open</span>
+                                    </div>
+                                @elseif ($document->status == 1)
+                                    Document Details
+                                    <span class="badge badge-primary pull-right">Status: Closed</span>
+                                @endif
                             </td>
                         </tr>
                     </table>
@@ -37,9 +35,9 @@
                     {!! Form::open(['route' => ['documents.update', Hashids::encode($document->id)], 'method' => 'put', 'class' => 'form-horizontal', 'files' => 'true']) !!}
 
                         <div class="form-group{{ $errors->has('reference_number') ? ' has-error' : '' }}">
-                            <label for="reference_number" class="col-md-4 control-label">Reference Number</label>
+                            <label for="reference_number" class="col-md-3 control-label">Reference Number</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::text('reference_number', $document->reference_number, ['class' => 'form-control', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('reference_number'))
@@ -51,9 +49,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
-                            <label for="date" class="col-md-4 control-label">Date</label>
+                            <label for="date" class="col-md-3 control-label">Date</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::text('date', \Carbon\Carbon::parse($document->created_at)->toDayDateTimeString(), ['class' => 'form-control', 'readonly']) !!}
 
                                 @if ($errors->has('date'))
@@ -65,9 +63,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('subject') ? ' has-error' : '' }}">
-                            <label for="subject" class="col-md-4 control-label">Subject</label>
+                            <label for="subject" class="col-md-3 control-label">Subject</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::text('subject', $document->subject, ['class' => 'form-control', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('subject'))
@@ -79,9 +77,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('details') ? ' has-error' : '' }}">
-                            <label for="details" class="col-md-4 control-label">Details</label>
+                            <label for="details" class="col-md-3 control-label">Details</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::textarea('details', $document->detail, ['class' => 'form-control', 'rows' => '3', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('details'))
@@ -93,9 +91,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('priority') ? ' has-error' : '' }}">
-                            <label for="priority" class="col-md-4 control-label">Priority</label>
+                            <label for="priority" class="col-md-3 control-label">Priority</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::select('priority', $priorities, $document->priority, ['class' => 'form-control', 'disabled']) !!}
 
                                 @if ($errors->has('priority'))
@@ -121,9 +119,9 @@
                         </div> --}}
 
                         <div class="form-group{{ $errors->has('comments') ? ' has-error' : '' }}">
-                            <label for="comments" class="col-md-4 control-label">Comments</label>
+                            <label for="comments" class="col-md-3 control-label">Comments</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::textarea('comments', $document->comment, ['class' => 'form-control', 'rows' => '3', $document->status == 1 ? 'readonly' : '' ]) !!}
 
                                 @if ($errors->has('comments'))
@@ -150,9 +148,9 @@
 
                         @if ($document->status != 1)
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                                <div class="col-md-8 col-md-offset-3">
                                     <button type="submit" class="btn btn-primary">
-                                        Save
+                                        Update
                                     </button>
                                     {{-- <a href="{{ route('home') }}" class="btn btn-default">Cancel</a> --}}
                                 </div>

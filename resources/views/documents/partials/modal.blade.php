@@ -46,7 +46,11 @@
                 <div class="form-group">
                     {!! Form::label('forward_to', 'Forward to') !!}
                     {!! Form::text('forward_to', null, ['class' => 'form-control', 'placeholder' => 'Enter forwarded to']) !!}
-                </div>                
+                </div>
+                <div class="form-group">
+                    {!! Form::label('forward_comments', 'Comments') !!}
+                    {!! Form::textarea('forward_comments', null, ['class' => 'form-control', 'rows' => '3', 'placeholder' => 'Enter comments']) !!}
+                </div>
             </div>
             <div class="modal-footer">
                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}

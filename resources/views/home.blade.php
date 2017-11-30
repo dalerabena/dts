@@ -4,14 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Filter Settings
-                </div>
-                <div class="panel-body">
-
-                </div>
-            </div>
+            @include('documents.partials.filter')
         </div>
         <div class="col-md-9">
             <div class="panel panel-default">

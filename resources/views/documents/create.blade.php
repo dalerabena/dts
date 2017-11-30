@@ -22,9 +22,9 @@
                     {!! Form::open(['route' => ['documents.store'], 'method' => 'post', 'class' => 'form-horizontal', 'files' => 'true']) !!}
 
                         <div class="form-group{{ $errors->has('reference_number') ? ' has-error' : '' }}">
-                            <label for="reference_number" class="col-md-4 control-label">Reference Number</label>
+                            <label for="reference_number" class="col-md-3 control-label">Reference Number</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::text('reference_number', old('reference_number'), ['class' => 'form-control']) !!}
 
                                 @if ($errors->has('reference_number'))
@@ -36,9 +36,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('subject') ? ' has-error' : '' }}">
-                            <label for="subject" class="col-md-4 control-label">Subject</label>
+                            <label for="subject" class="col-md-3 control-label">Subject</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::text('subject', old('subject'), ['class' => 'form-control']) !!}
 
                                 @if ($errors->has('subject'))
@@ -50,9 +50,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('details') ? ' has-error' : '' }}">
-                            <label for="details" class="col-md-4 control-label">Details</label>
+                            <label for="details" class="col-md-3 control-label">Details</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' => '3']) !!}
 
                                 @if ($errors->has('details'))
@@ -64,9 +64,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('priority') ? ' has-error' : '' }}">
-                            <label for="priority" class="col-md-4 control-label">Priority</label>
+                            <label for="priority" class="col-md-3 control-label">Priority</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::select('priority', $priorities, null, ['class' => 'form-control']) !!}
 
                                 @if ($errors->has('priority'))
@@ -78,9 +78,9 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('comments') ? ' has-error' : '' }}">
-                            <label for="comments" class="col-md-4 control-label">Comments</label>
+                            <label for="comments" class="col-md-3 control-label">Comments</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::textarea('comments', null, ['class' => 'form-control', 'rows' => '3']) !!}
 
                                 @if ($errors->has('comments'))
@@ -106,9 +106,9 @@
                         </div> --}}
 
                         <div class="form-group{{ $errors->has('attachment') ? ' has-error' : '' }}">
-                            <label for="attachment" class="col-md-4 control-label">Attachment</label>
+                            <label for="attachment" class="col-md-3 control-label">Attachment</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 {!! Form::file('attachment[]', ['multiple']) !!}
 
                                 @if ($errors->has('attachment'))
@@ -120,7 +120,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="col-md-8 col-md-offset-3">
                                 <button type="submit" class="btn btn-primary">
                                     Save
                                 </button>

@@ -274,6 +274,7 @@ class DocumentController extends Controller
             $history = History::create([
                 'document_id' => $id,
                 'forwarded_to' => $request->forward_to,
+                'comment' => $request->forward_comments,
                 'action' => 2,
                 'action_by' => Auth::id()
             ]);
