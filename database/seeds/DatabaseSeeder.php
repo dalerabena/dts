@@ -14,7 +14,15 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
         $this->call([
             PrioritiesSeeder::class,
-            UsersSeeder::class
+            UsersSeeder::class,
+            AuthorSeeder::class,
+            CoAuthorSeeder::class,
+            CommitteeActionSeeder::class,
+            CoSponsorSeeder::class,
+            ProponentSeeder::class,
+            ReferredToSeeder::class,
+            RefLawSeeder::class,
+            SBActionSeeder::class
         ]);
     }
 }

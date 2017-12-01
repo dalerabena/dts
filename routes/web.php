@@ -36,6 +36,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('documents', 'DocumentController');
     Route::put('documents/{id}/close', 'DocumentController@close')->name('document.close');
     Route::put('documents/{id}/forward', 'DocumentController@forward')->name('document.forward');
+
+    Route::resource('legislative', 'LegislativeMeasureController');
 });
 
 Route::group(['middleware' => 'admin'], function() {
