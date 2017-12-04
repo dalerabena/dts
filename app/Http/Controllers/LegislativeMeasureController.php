@@ -305,9 +305,27 @@ class LegislativeMeasureController extends Controller
      * @param  \App\LegislativeMeasure  $legislativeMeasure
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LegislativeMeasure $legislativeMeasure)
+    public function destroy(Request $request, $id)
     {
-        //
+        $id = Hashids::decode($id)[0];
+        $legislative_measure = LegislativeMeasure::find($id);
+
+        if ( !is_null($legislative_measure) ) {
+
+            $result = $legislative_measure->delete();
+
+            if ($result) {
+                $request->session()->flash('alert-success', '<strong>Success!</strong> Legislative measure record has been deleted.');
+            } else {
+                $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Legislative measure record not deleted.');
+            }
+
+            return redirect()->route('legislative.index');
+
+        } else {
+            $request->session()->flash('alert-danger', '<strong>Oops!</strong> Legislative measure record not found.');
+            return redirect()->route('legislative.index');
+        }
     }
 
     public function getOrdResNos() {
