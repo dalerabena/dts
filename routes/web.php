@@ -33,9 +33,9 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/', 'HomeController@index')->name('home');
 
-    Route::resource('documents', 'DocumentController');
-    Route::put('documents/{id}/close', 'DocumentController@close')->name('document.close');
-    Route::put('documents/{id}/forward', 'DocumentController@forward')->name('document.forward');
+    // Route::resource('documents', 'DocumentController');
+    // Route::put('documents/{id}/close', 'DocumentController@close')->name('document.close');
+    // Route::put('documents/{id}/forward', 'DocumentController@forward')->name('document.forward');
 
     Route::resource('legislative', 'LegislativeMeasureController');
     Route::group(['prefix' => 'api'], function() {
