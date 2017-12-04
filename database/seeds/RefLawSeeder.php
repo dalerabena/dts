@@ -12,8 +12,8 @@ class RefLawSeeder extends Seeder
      */
     public function run()
     {
-        if (DB::table('ref_laws')->get()->count() == 0) {
-            DB::table('ref_laws')->insert([
+        if (DB::table('law_types')->get()->count() == 0) {
+            DB::table('law_types')->insert([
                 ['type' => 'Resolution'],
                 ['type' => 'Ordinance']
             ]);

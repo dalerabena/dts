@@ -38,6 +38,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::put('documents/{id}/forward', 'DocumentController@forward')->name('document.forward');
 
     Route::resource('legislative', 'LegislativeMeasureController');
+    Route::group(['prefix' => 'api'], function() {
+        Route::get('ord_res_nos', 'LegislativeMeasureController@getOrdResNos')->name('ord_res_no');
+        Route::get('title_subjects', 'LegislativeMeasureController@getTitleSubjects')->name('title_subject');
+    });
 });
 
 Route::group(['middleware' => 'admin'], function() {
