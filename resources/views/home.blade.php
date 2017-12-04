@@ -4,45 +4,62 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-            @include('documents.partials.filter')
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Filter Settings
+                </div>
+                <div class="panel-body">
+                    {!! Form::open(['method' => 'get']) !!}
+                    <div class="form-group">
+                        {!! Form::label('law_type', 'Type of Law') !!}
+                        {!! Form::select('law_type', $ref_laws, null, ['class' => 'form-control', 'placeholder' => 'Select type of law']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('ord_res_no', 'Ord/Res No.') !!}
+                        {!! Form::text('ord_res_no', null, ['class' => 'form-control', 'placeholder' => 'Enter ord/res no.', 'id' => 'ord_res_no']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('title_subject', 'Subject Matter') !!}
+                        {!! Form::text('title_subject', null, ['class' => 'form-control', 'placeholder' => 'Enter subject matter', 'id' => 'title_subject']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('sb_action', 'SB Action') !!}
+                        {!! Form::select('sb_action', $sb_actions, null, ['class' => 'form-control', 'placeholder' => 'Select sb action']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::submit('Filter', ['class' => 'btn btn-primary']) !!}
+                    </div>
+                    {!! Form::close() !!}
+                </div>
+            </div>
         </div>
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Your Documents
+                    All Documents
                 </div>
                 <div class="panel-body">
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th width="4%">#</th>
-                                <th width="20%">Reference Number</th>
-                                <th width="35%">Subject</th>
-                                <th>Date Created</th>
-                                <th>Priority</th>
-                                <th>Status</th>
+                                <th width="20%">Type of Law</th>
+                                <th width="35%">Ord/Res No.</th>
+                                <th>Subject Matter</th>
                                 <th width="5%">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if($documents->count() > 0)
-                                @foreach($documents as $key => $document)
+                            @if($legislative_measures->count() > 0)
+                                @foreach($legislative_measures as $key => $value)
+                                    {{$value->law_detail}}
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $document->reference_number }}</td>
-                                        <td>{{ $document->subject }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($document->created_at)->toDayDateTimeString() }}</td>
-                                        @if ($document->priority == 1)
-                                            <td class="text-success">
-                                        @elseif ($document->priority == 2)
-                                            <td class="text-warning">
-                                        @elseif ($document->priority == 3)
-                                            <td class="text-danger">
-                                        @endif
-                                            {{ $document->refPriority->desc }}</td>
-                                        <td>{{ $document->status ? 'Closed' : 'Open' }}</td>
+                                        <td>{{ $value->law_details->type }}</td>
+                                        <td>{{ $value->ord_res_no }}</td>
+                                        <td>{{ $value->title_subject }}</td>
                                         <td>
-                                            <a href="{{ route('documents.show', [ Hashids::encode($document->id) ]) }}" class="btn btn-primary btn-sm">View</a>
+                                            <a href="{{ route('legislative.show', [ Hashids::encode($value->id) ]) }}" class="btn btn-primary btn-sm">View</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -59,3 +76,21 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/bootstrap3-typeahead.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.get('{{ route('ord_res_no') }}', function(data) {
+                $('#ord_res_no').typeahead({
+                    source: data
+                });
+            });
+            $.get('{{ route('title_subject') }}', function(data) {
+                $('#title_subject').typeahead({
+                    source: data
+                });
+            });
+        });
+    </script>
+@endpush

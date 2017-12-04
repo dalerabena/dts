@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\RefPriority;
+use App\LegislativeMeasure;
+use App\LawType;
+use App\SBAction;
 
 class HomeController extends Controller
 {
@@ -25,29 +27,25 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $documents = $user->documents()->when(isset($request->reference_number), function($query) use($request) {
-                        $query->where('reference_number', 'like', '%' . $request->reference_number . '%');
-                    })->when(isset($request->subject), function($query) use($request) {
-                        $query->where('subject', 'like', '%' . $request->subject . '%');
-                    })->when(isset($request->date_created), function($query) use($request) {
-                        $query->where('created_at', 'like', '%' . $request->date_created . '%');
-                    })->when(isset($request->priority), function($query) use($request) {
-                        $query->where('priority', '=', $request->priority);
-                    })->when(isset($request->status), function($query) use($request) {
-                        $query->where('status', '=', $request->status);
+        $legislative_measures = LegislativeMeasure::all();
+
+        $legislative_measures = LegislativeMeasure::when(isset($request->law_type), function($query) use($request) {
+                        $query->where('law_type', '=', $request->law_type);
+                    })->when(isset($request->ord_res_no), function($query) use($request) {
+                        $query->where('ord_res_no', 'like', '%' . $request->ord_res_no . '%');
+                    })->when(isset($request->title_subject), function($query) use($request) {
+                        $query->where('title_subject', 'like', '%' . $request->title_subject . '%');
+                    })->when(isset($request->sb_action), function($query) use($request) {
+                        $query->where('priority', '=', $request->sb_action);
                     })->get();
 
-        $priorities = RefPriority::all()->pluck('desc', 'id');
-        $status = [
-            0 => 'Open',
-            1 => 'Closed'
-        ];
+        $ref_laws = LawType::all()->pluck('type', 'id');
+        $sb_actions = SBAction::all()->pluck('action', 'id');
 
         $arr = [
-            'documents' => $documents,
-            'priorities' => $priorities,
-            'status' => $status
+            'legislative_measures' => $legislative_measures,
+            'ref_laws' => $ref_laws,
+            'sb_actions' => $sb_actions
         ];
 
         return view('home', $arr);
