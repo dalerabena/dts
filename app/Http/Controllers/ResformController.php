@@ -207,7 +207,9 @@ class ResformController extends Controller
         $result =  Resform::select('resolution_no')->get();
 
         foreach ($result as $key => $value) {
-            array_push($list, $value->resolution_no);
+            if (!is_null($value->resolution_no) || $value->resolution_no != "") {
+                array_push($list, $value->resolution_no);
+            }            
         }
 
         return response()->json($list);

@@ -202,7 +202,9 @@ class FranformController extends Controller
         $result =  Franform::select('ordinance_no')->get();
 
         foreach ($result as $key => $value) {
-            array_push($list, $value->ordinance_no);
+            if (!is_null($value->ordinance_no) || $value->ordinance_no != "") {
+                array_push($list, $value->ordinance_no);
+            }
         }
 
         return response()->json($list);
@@ -213,7 +215,9 @@ class FranformController extends Controller
         $result = Franform::select('name')->get();
 
         foreach ($result as $key => $value) {
-            array_push($list, $value->name);
+            if (!is_null($value->name) || $value->name != "") {
+                array_push($list, $value->name);
+            }
         }
 
         return response()->json($list);
