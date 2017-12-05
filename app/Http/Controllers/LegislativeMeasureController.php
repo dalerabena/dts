@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use Hashids;
+use Storage;
 
 class LegislativeMeasureController extends Controller
 {
@@ -156,7 +157,7 @@ class LegislativeMeasureController extends Controller
 
         DB::commit();
 
-        $request->session()->flash('alert-success', '<strong>Success!</strong> New document has been added.');
+        $request->session()->flash('alert-success', '<strong>Success!</strong> Record has been saved.');
         return redirect()->route('legislative.index');
 
     }
@@ -294,7 +295,7 @@ class LegislativeMeasureController extends Controller
 
         DB::commit();
 
-        $request->session()->flash('alert-success', '<strong>Success!</strong> New document has been added.');
+        $request->session()->flash('alert-success', '<strong>Success!</strong> Record has been updated.');
         return redirect()->route('legislative.index');
 
     }
@@ -315,15 +316,15 @@ class LegislativeMeasureController extends Controller
             $result = $legislative_measure->delete();
 
             if ($result) {
-                $request->session()->flash('alert-success', '<strong>Success!</strong> Legislative measure record has been deleted.');
+                $request->session()->flash('alert-success', '<strong>Success!</strong> Record has been deleted.');
             } else {
-                $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Legislative measure record not deleted.');
+                $request->session()->flash('alert-info', '<strong>Oops!</strong> Something went wrong. Record not deleted.');
             }
 
             return redirect()->route('legislative.index');
 
         } else {
-            $request->session()->flash('alert-danger', '<strong>Oops!</strong> Legislative measure record not found.');
+            $request->session()->flash('alert-danger', '<strong>Oops!</strong> Record not found.');
             return redirect()->route('legislative.index');
         }
     }

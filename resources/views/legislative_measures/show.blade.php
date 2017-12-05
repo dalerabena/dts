@@ -11,11 +11,7 @@
                         <tr>
                             <td>
                                 Create new Legislative Measure
-                                <form class="pull-right" method="POST" action="{{ route('legislative.destroy', [ Hashids::encode($legislative_measure->id) ]) }}" onsubmit="return confirm('Are you sure you want to delete this record?');">
-                                    {{ csrf_field() }}
-                                    {!! Form::hidden('_method', 'DELETE') !!}
-                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-sm']) !!}
-                                </form>
+                                <button type="button" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#deleteRecord">Delete Record</button>
                             </td>
                         </tr>
                     </table>
@@ -267,6 +263,7 @@
                     {!! Form::close() !!}
                 </div>
             </div>
+            @include('legislative_measures.partials.modal')
         </div>
     </div>
 </div>

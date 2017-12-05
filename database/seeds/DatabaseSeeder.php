@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             ProponentSeeder::class,
             ReferredToSeeder::class,
             RefLawSeeder::class,
-            SBActionSeeder::class
+            SBActionSeeder::class,
+            BrgySeeder::class,
         ]);
     }
 }

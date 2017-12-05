@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSBActionsTable extends Migration
+class CreateOrdformsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateSBActionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sb_actions', function (Blueprint $table) {
+        Schema::create('ordforms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('action');
+            $table->string('ordinance_no')->nullable();
+            $table->text('subject_matter')->nullable();
+            $table->string('sponsors')->nullable();
+            $table->date('approved_date')->nullable();
+            $table->text('sp_actions')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ class CreateSBActionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sb_actions');
+        Schema::dropIfExists('ordforms');
     }
 }

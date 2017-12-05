@@ -38,9 +38,20 @@ Route::group(['middleware' => 'auth'], function() {
     // Route::put('documents/{id}/forward', 'DocumentController@forward')->name('document.forward');
 
     Route::resource('legislative', 'LegislativeMeasureController');
+
+    Route::group(['prefix' => 'forms'], function() {
+        Route::resource('franform', 'FranformController');
+        Route::resource('ordform', 'OrdformController');
+    });
+
     Route::group(['prefix' => 'api'], function() {
         Route::get('ord_res_nos', 'LegislativeMeasureController@getOrdResNos')->name('ord_res_no');
         Route::get('title_subjects', 'LegislativeMeasureController@getTitleSubjects')->name('title_subject');
+
+        Route::get('ord_nos', 'FranformController@getOrdNos')->name('franform_ordnos');
+        Route::get('names', 'FranformController@getNames')->name('franform_names');
+
+        Route::get('ordform_ord_nos', 'OrdformController@getOrdNos')->name('ordform_ordnos');
     });
 });
 

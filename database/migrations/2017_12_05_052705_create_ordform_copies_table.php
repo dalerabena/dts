@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSBActionsTable extends Migration
+class CreateOrdformCopiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateSBActionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sb_actions', function (Blueprint $table) {
+        Schema::create('ordform_copies', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('action');
+            $table->integer('ordform_id');
+            $table->string('filename');
+            $table->string('path');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateSBActionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sb_actions');
+        Schema::dropIfExists('ordform_copies');
     }
 }
