@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['prefix' => 'forms'], function() {
         Route::resource('franform', 'FranformController');
         Route::resource('ordform', 'OrdformController');
+        Route::resource('resform', 'ResformController');
     });
 
     Route::group(['prefix' => 'api'], function() {
@@ -52,6 +53,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('names', 'FranformController@getNames')->name('franform_names');
 
         Route::get('ordform_ord_nos', 'OrdformController@getOrdNos')->name('ordform_ordnos');
+        Route::get('resform_res_nos', 'OrdformController@getOrdNos')->name('resform_resnos');
     });
 });
 

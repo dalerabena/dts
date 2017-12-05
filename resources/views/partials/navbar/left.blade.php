@@ -61,8 +61,8 @@
             Resform <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li><a href="{{ route('franform.create') }}">New record</a></li>
-            <li><a href="{{ route('franform.index') }}">View records</a></li>
+            <li><a href="{{ route('resform.create') }}">New record</a></li>
+            <li><a href="{{ route('resform.index') }}">View records</a></li>
         </ul>
     </li>
 @endguest

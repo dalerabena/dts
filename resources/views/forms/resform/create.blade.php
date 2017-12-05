@@ -10,30 +10,29 @@
                     <table width="100%">
                         <tr>
                             <td>
-                                View Ordform Record
-                                <button type="button" class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#deleteRecord">Delete Record</button>
+                                New resform record
                             </td>
                         </tr>
                     </table>
                 </div>
 
                 <div class="panel-body">
-                    {!! Form::open(['route' => ['ordform.update', Hashids::encode($record->id)], 'method' => 'put', 'files' => 'true']) !!}
+                    {!! Form::open(['route' => ['resform.store'], 'files' => 'true']) !!}
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {!! Form::label('ordinance_no', 'Ordinance Number') !!}
-                                        {!! Form::text('ordinance_no', $record->ordinance_no, ['class' => 'form-control', 'placeholder' => 'Enter ordinance number']) !!}
+                                        {!! Form::label('resolution_no', 'Resolution Number') !!}
+                                        {!! Form::text('resolution_no', null, ['class' => 'form-control', 'placeholder' => 'Enter resolution number']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {!! Form::label('subject_matter', 'Subject Matter') !!}
-                                        {!! Form::textarea('subject_matter', $record->subject_matter, ['class' => 'form-control', 'placeholder' => 'Enter subject matter', 'rows' => '2']) !!}
+                                        {!! Form::label('title', 'Title') !!}
+                                        {!! Form::textarea('title', null, ['class' => 'form-control', 'placeholder' => 'Enter title', 'rows' => '2']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -42,7 +41,7 @@
                                     <div class="form-group">
                                         {!! Form::label('sponsors', 'Sponsor/s') !!}
                                         <br>
-                                        {!! Form::select('sponsors[]', $sponsors, explode('###', $record->sponsors), ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'sponsors']) !!}
+                                        {!! Form::select('sponsors[]', $sponsors, null, ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'sponsors']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -52,15 +51,15 @@
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         {!! Form::label('approved_date', 'Date Approved') !!}
-                                        {!! Form::text('approved_date', $record->approved_date, ['class' => 'form-control', 'placeholder' => 'yyyy-mm-dd', 'data-provide' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd' ]) !!}
+                                        {!! Form::text('approved_date', null, ['class' => 'form-control', 'placeholder' => 'yyyy-mm-dd', 'data-provide' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd' ]) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {!! Form::label('sp_actions', 'SP Action/s') !!}
-                                        {!! Form::textarea('sp_actions', $record->sp_actions, ['class' => 'form-control', 'placeholder' => 'Enter sp action/s', 'rows' => '2']) !!}
+                                        {!! Form::label('sp_approval', 'SP Approval') !!}
+                                        {!! Form::textarea('sp_approval', null, ['class' => 'form-control', 'placeholder' => 'Enter sp approval', 'rows' => '2']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -69,26 +68,22 @@
                                     <div class="form-group">
                                         {!! Form::label('copy', 'Print copy') !!}
                                         {!! Form::file('copy') !!}
-                                        @foreach ($copies as $key => $value)
-                                            <a href="{{ asset("storage/$value->path") }}">{{ $value->filename }}</a>
-                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                                <a href="{{ route('ordform.index') }}" class="btn btn-default">Cancel</a>
+                                <a href="{{ route('franform.index') }}" class="btn btn-default">Cancel</a>
                             </div>
                         </div>
                     </div>
                     {!! Form::close() !!}
                 </div>
             </div>
-            @include('forms.ordform.partials.modal')
         </div>
     </div>
 </div>

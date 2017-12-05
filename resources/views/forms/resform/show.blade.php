@@ -18,22 +18,22 @@
                 </div>
 
                 <div class="panel-body">
-                    {!! Form::open(['route' => ['ordform.update', Hashids::encode($record->id)], 'method' => 'put', 'files' => 'true']) !!}
+                    {!! Form::open(['route' => ['resform.update', Hashids::encode($record->id)], 'method' => 'put', 'files' => 'true']) !!}
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {!! Form::label('ordinance_no', 'Ordinance Number') !!}
-                                        {!! Form::text('ordinance_no', $record->ordinance_no, ['class' => 'form-control', 'placeholder' => 'Enter ordinance number']) !!}
+                                        {!! Form::label('resolution_no', 'Resolution Number') !!}
+                                        {!! Form::text('resolution_no', $record->resolution_no, ['class' => 'form-control', 'placeholder' => 'Enter resolution number']) !!}
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {!! Form::label('subject_matter', 'Subject Matter') !!}
-                                        {!! Form::textarea('subject_matter', $record->subject_matter, ['class' => 'form-control', 'placeholder' => 'Enter subject matter', 'rows' => '2']) !!}
+                                        {!! Form::label('title', 'Title') !!}
+                                        {!! Form::textarea('title', $record->title, ['class' => 'form-control', 'placeholder' => 'Enter title', 'rows' => '2']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -59,8 +59,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {!! Form::label('sp_actions', 'SP Action/s') !!}
-                                        {!! Form::textarea('sp_actions', $record->sp_actions, ['class' => 'form-control', 'placeholder' => 'Enter sp action/s', 'rows' => '2']) !!}
+                                        {!! Form::label('sp_approval', 'SP Approval') !!}
+                                        {!! Form::textarea('sp_approval', $record->sp_approval, ['class' => 'form-control', 'placeholder' => 'Enter sp approval', 'rows' => '2']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -81,14 +81,14 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                                <a href="{{ route('ordform.index') }}" class="btn btn-default">Cancel</a>
+                                <a href="{{ route('resform.index') }}" class="btn btn-default">Cancel</a>
                             </div>
                         </div>
                     </div>
                     {!! Form::close() !!}
                 </div>
             </div>
-            @include('forms.ordform.partials.modal')
+            @include('forms.resform.partials.modal')
         </div>
     </div>
 </div>
