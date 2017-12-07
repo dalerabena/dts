@@ -84,7 +84,7 @@
 @push('scripts')
     <script src="{{ asset('js/bootstrap3-typeahead.min.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(function() {
             $.get('{{ route('ord_res_no') }}', function(data) {
                 $('#ord_res_no').typeahead({
                     source: data

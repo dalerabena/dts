@@ -24,7 +24,7 @@ class OrdformController extends Controller
                         $query->where('subject_matter', 'like', '%' . $request->subject_matter . '%');
                     })->when(isset($request->approved_date), function($query) use($request) {
                         $query->where('approved_date', 'like', '%' . $request->approved_date . '%');
-                    })->get();
+                    })->orderBy('created_at', 'desc')->get();
 
         $arr = [
             'records' => $records

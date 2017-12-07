@@ -95,13 +95,13 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css">
+    <link rel="stylesheet" href="{{ asset('storage/bootstrap-multiselect/bootstrap-multiselect.css') }}">
 @endpush
 
 @push('scripts')
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.min.js" charset="utf-8"></script>
+    <script src="{{ asset('storage/bootstrap-multiselect/bootstrap-multiselect.min.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(function() {
             $('#sponsors').multiselect({
                 buttonWidth: '100%'
             });

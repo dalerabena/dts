@@ -84,7 +84,7 @@
 @push('scripts')
     <script src="{{ asset('js/bootstrap3-typeahead.min.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(function() {
             $.get('{{ route('franform_ordnos') }}', function(data) {
                 $('#ordinance_no').typeahead({
                     source: data

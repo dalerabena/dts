@@ -24,7 +24,7 @@ class ResformController extends Controller
                         $query->where('title', 'like', '%' . $request->title . '%');
                     })->when(isset($request->approved_date), function($query) use($request) {
                         $query->where('approved_date', 'like', '%' . $request->approved_date . '%');
-                    })->get();
+                    })->orderBy('created_at', 'desc')->get();
 
         $arr = [
             'records' => $records
@@ -209,7 +209,7 @@ class ResformController extends Controller
         foreach ($result as $key => $value) {
             if (!is_null($value->resolution_no) || $value->resolution_no != "") {
                 array_push($list, $value->resolution_no);
-            }            
+            }
         }
 
         return response()->json($list);

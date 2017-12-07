@@ -37,7 +37,7 @@ class LegislativeMeasureController extends Controller
                         $query->where('title_subject', 'like', '%' . $request->title_subject . '%');
                     })->when(isset($request->sb_action), function($query) use($request) {
                         $query->where('sb_action', '=', $request->sb_action);
-                    })->get();
+                    })->orderBy('created_at', 'desc')->get();
 
         $ref_laws = LawType::all()->pluck('type', 'id');
         $sb_actions = SBAction::all()->pluck('action', 'id');

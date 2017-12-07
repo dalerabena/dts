@@ -38,6 +38,8 @@ Route::group(['middleware' => 'auth'], function() {
     // Route::put('documents/{id}/forward', 'DocumentController@forward')->name('document.forward');
 
     Route::resource('legislative', 'LegislativeMeasureController');
+    Route::resource('sessions', 'SessionController');
+    Route::resource('agendas', 'AgendaController');
 
     Route::group(['prefix' => 'forms'], function() {
         Route::resource('franform', 'FranformController');

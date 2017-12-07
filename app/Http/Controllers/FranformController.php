@@ -25,7 +25,7 @@ class FranformController extends Controller
                         $query->where('status', '=', $request->status);
                     })->when(isset($request->brgy), function($query) use($request) {
                         $query->where('barangay', '=', $request->brgy);
-                    })->get();
+                    })->orderBy('created_at', 'desc')->get();
 
         $brgys = RefBrgy::all()->pluck('brgyDesc', 'brgyCode');
         $status = [ 'New' => 'New', 'Renewal' => 'Renewal', 'Amendment' => 'Amendment' ];

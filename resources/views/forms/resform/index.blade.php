@@ -80,7 +80,7 @@
 @push('scripts')
     <script src="{{ asset('js/bootstrap3-typeahead.min.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(function() {
             $.get('{{ route('resform_resnos') }}', function(data) {
                 $('#resolution_no').typeahead({
                     source: data
