@@ -84,15 +84,15 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('storage/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('storage/font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('storage/bootstrap-multiselect/bootstrap-multiselect.css') }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap-multiselect/bootstrap-multiselect.css') }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('storage/moment/min/moment.min.js') }}"></script>
-    <script src="{{ asset('storage/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ asset('storage/bootstrap-multiselect/bootstrap-multiselect.min.js') }}"></script>
+    <script src="{{ asset('moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('bootstrap-multiselect/bootstrap-multiselect.min.js') }}"></script>
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker').datetimepicker({
