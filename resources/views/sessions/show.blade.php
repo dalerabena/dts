@@ -136,7 +136,7 @@
                             {!! Form::select('agenda_proponents[]', $proponents, null, ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'proponents']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('agenda_attachments', 'Attachments') !!}
+                            {!! Form::label('agenda_attachments', 'Attachment/s') !!}
                             {!! Form::file('agenda_attachments[]', ['multiple']) !!}
                         </div>
                         <div class="form-group">
