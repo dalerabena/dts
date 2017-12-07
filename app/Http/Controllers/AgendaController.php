@@ -120,27 +120,34 @@ class AgendaController extends Controller
         $agenda = Agenda::find($id);
         $session_id = $agenda->session_id;
 
-        DB::beginTransaction();
-            try {
-                foreach ($agenda->attachments as $key => $value) {
-                    $attachment = AgendaAttachment::find($value->id);
-                    $result = Storage::delete($attachment->path);
+        if ( !is_null($legislative_measure) ) {
 
-                    if ($result) {
-                        $attachment->delete();
+            DB::beginTransaction();
+                try {
+                    foreach ($agenda->attachments as $key => $value) {
+                        $attachment = AgendaAttachment::find($value->id);
+                        $result = Storage::delete($attachment->path);
+
+                        if ($result) {
+                            $attachment->delete();
+                        }
                     }
+
+                    $result = $agenda->delete();
+
+                } catch (\ValidationException $e) {
+                    $request->session()->flash('alert-danger', '<strong>Oops!</strong> Something went wrong.');
+                    return redirect()->route('sessions.show', Hashids::encode($session_id));
                 }
 
-                $result = $agenda->delete();
+            DB::commit();
 
-            } catch (\ValidationException $e) {
-                $request->session()->flash('alert-danger', '<strong>Oops!</strong> Something went wrong.');
-                return redirect()->route('sessions.show', Hashids::encode($session_id));
-            }
+            $request->session()->flash('alert-success', '<strong>Success!</strong> Agenda has been removed.');
+            return redirect()->route('sessions.show', Hashids::encode($session_id));
 
-        DB::commit();
-
-        $request->session()->flash('alert-success', '<strong>Success!</strong> Agenda has been removed.');
-        return redirect()->route('sessions.show', Hashids::encode($session_id));
+        } else {
+            $request->session()->flash('alert-danger', '<strong>Oops!</strong> Session not found.');
+            return redirect()->route('legislative.index');
+        }
     }
 }
