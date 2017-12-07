@@ -74,7 +74,7 @@
                             <tr>
                                 <th width="5%">#</th>
                                 <th width="25%">Title</th>
-                                <th width="35%">Proponents</th>
+                                <th width="35%">Proponent/s</th>
                                 <th>Attachment/s</th>
                                 <th>&nbsp;</th>
                             </tr>
@@ -132,7 +132,7 @@
                             {!! Form::textarea('agenda_title', null, ['class' => 'form-control', 'placeholder' => 'Enter agenda title', 'rows' => '2']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('agenda_proponents[]', 'Proponents') !!}
+                            {!! Form::label('agenda_proponents[]', 'Proponent/s') !!}
                             {!! Form::select('agenda_proponents[]', $proponents, null, ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'proponents']) !!}
                         </div>
                         <div class="form-group">
