@@ -120,7 +120,7 @@ class AgendaController extends Controller
         $agenda = Agenda::find($id);
         $session_id = $agenda->session_id;
 
-        if ( !is_null($legislative_measure) ) {
+        if ( !is_null($agenda) ) {
 
             DB::beginTransaction();
                 try {
@@ -147,7 +147,7 @@ class AgendaController extends Controller
 
         } else {
             $request->session()->flash('alert-danger', '<strong>Oops!</strong> Session not found.');
-            return redirect()->route('legislative.index');
+            return redirect()->route('sessions.index');
         }
     }
 }
