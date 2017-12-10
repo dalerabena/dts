@@ -41,7 +41,7 @@
                               <div class="panel panel-success">
                                 <div class="panel-heading">
                                   <h4 class="panel-title">
-                                    {{ $agenda->title }}
+                                    #{{ $key+1 }} {{ $agenda->title }}
                                   </h4>
                                 </div>
                                 <div id="collapse{{ $key }}" class="panel-collapse collapsed">
