@@ -28,11 +28,12 @@
                         {!! Form::text('session_date', null, ['class' => 'form-control', 'placeholder' => 'yyyy-mm-dd', 'data-provide' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('approved_date', 'Time') !!}
-                        {!! Form::text('approved_date', null, ['class' => 'form-control', 'placeholder' => 'Enter time', 'id' => 'datetimepicker']) !!}
+                        {!! Form::label('session_time', 'Time') !!}
+                        {!! Form::text('session_time', null, ['class' => 'form-control', 'placeholder' => 'Enter time', 'id' => 'datetimepicker']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::submit('Filter', ['class' => 'btn btn-primary']) !!}
+                        <a href="{{ route('sessions.index') }}" class="btn btn-default">Reset</a>
                     </div>
                     {!! Form::close() !!}
                 </div>
@@ -52,6 +53,7 @@
                                 <th>Place</th>
                                 <th>Date</th>
                                 <th>Time</th>
+                                <th>ID</th>
                                 <th width="5%">&nbsp;</th>
                             </tr>
                         </thead>
@@ -64,6 +66,7 @@
                                         <td>{{ $value->place }}</td>
                                         <td>{{ $value->session_date }}</td>
                                         <td>{{ $value->session_time }}</td>
+                                        <td>{{ Hashids::encode($value->id) }}</td>
                                         <td>
                                             <a href="{{ route('sessions.show', [ Hashids::encode($value->id) ]) }}" class="btn btn-primary btn-sm">View</a>
                                         </td>

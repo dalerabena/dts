@@ -33,6 +33,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::submit('Filter', ['class' => 'btn btn-primary']) !!}
+                        <a href="{{ route('franform.index') }}" class="btn btn-default">Reset</a>
                     </div>
                     {!! Form::close() !!}
                 </div>

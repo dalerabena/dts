@@ -25,6 +25,12 @@
                     {!! Form::open(['route' => ['sessions.update', Hashids::encode($session->id)], 'method' => 'put']) !!}
 
                         <div class="row">
+                            <div class="col-md-12">
+                                <p class="alert alert-info">Your session id is <strong>{{ Hashids::encode($session->id) }}</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="session_type" class="control-label">Session Type</label>
@@ -87,9 +93,11 @@
                                         <td>{{ $value->title }}</td>
                                         <td>
                                             <ul>
-                                                @foreach (explode('###', $value->proponents) as $proponent)
-                                                    <li>{{ \App\Proponent::find($proponent)->name }}</li>
-                                                @endforeach
+                                                @if(!is_null($value->proponents))
+                                                    @foreach (explode('###', $value->proponents) as $proponent)
+                                                        <li>{{ \App\Proponent::find($proponent)->name }}</li>
+                                                    @endforeach
+                                                @endif
                                             </ul>
                                         </td>
                                         <td>

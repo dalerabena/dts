@@ -64,3 +64,5 @@ Route::group(['middleware' => 'admin'], function() {
         'except' => ['show']
     ]);
 });
+
+Route::get('session', 'Session2Controller@session')->name('session_index');

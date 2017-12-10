@@ -70,6 +70,7 @@ class AgendaController extends Controller
 
         DB::commit();
 
+        $request->session()->flash('alert-success', '<strong>Success!</strong> Agenda has been added.');
         return redirect()->route('sessions.show', $request->session_id);
     }
 
