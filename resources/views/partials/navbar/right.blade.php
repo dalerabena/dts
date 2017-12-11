@@ -1,5 +1,5 @@
 @guest
-    <li><a href="{{ route('session_index') }}">Find Session</a></li>
+    <li><a href="{{ route('session_index') }}">Sessions</a></li>
     <li><a href="{{ route('login') }}">Login</a></li>
     {{-- <li><a href="{{ route('register') }}">Register</a></li> --}}
 @else

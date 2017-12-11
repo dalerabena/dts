@@ -34,10 +34,10 @@
                     Agenda/s
                 </div>
 
-                <div class="panel-body">                    
+                <div class="panel-body">
                     @if($session->agendas()->count() > 0)
                         <div class="panel-group">
-                        @foreach($session->agendas as $key => $agenda)                             
+                        @foreach($session->agendas as $key => $agenda)
                               <div class="panel panel-success">
                                 <div class="panel-heading">
                                   <h4 class="panel-title">
@@ -52,7 +52,7 @@
                                             @foreach (explode('###', $agenda->proponents) as $proponent)
                                                 <li>{{ \App\Proponent::find($proponent)->name }}</li>
                                             @endforeach
-                                        </ul>                                            
+                                        </ul>
                                         @endif
 
 
@@ -68,9 +68,11 @@
                                         @endif
                                     </div>
                                 </div>
-                              </div>                            
+                              </div>
                         @endforeach
-                        </div> 
+                        </div>
+                    @else
+                        <p class="alert alert-info">No agenda/s to display.</p>
                     @endif
                 </div>
             </div>

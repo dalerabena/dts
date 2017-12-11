@@ -53,7 +53,7 @@
                                 <th>Place</th>
                                 <th>Date</th>
                                 <th>Time</th>
-                                <th>ID</th>
+                                {{-- <th>ID</th> --}}
                                 <th width="5%">&nbsp;</th>
                             </tr>
                         </thead>
@@ -66,7 +66,7 @@
                                         <td>{{ $value->place }}</td>
                                         <td>{{ $value->session_date }}</td>
                                         <td>{{ $value->session_time }}</td>
-                                        <td>{{ Hashids::encode($value->id) }}</td>
+                                        {{-- <td>{{ Hashids::encode($value->id) }}</td> --}}
                                         <td>
                                             <a href="{{ route('sessions.show', [ Hashids::encode($value->id) ]) }}" class="btn btn-primary btn-sm">View</a>
                                         </td>

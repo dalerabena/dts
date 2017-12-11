@@ -65,4 +65,5 @@ Route::group(['middleware' => 'admin'], function() {
     ]);
 });
 
-Route::get('session', 'Session2Controller@session')->name('session_index');
+Route::get('session', 'Session2Controller@index')->name('session_index');
+Route::get('session/{id}', 'Session2Controller@show')->name('session_show');

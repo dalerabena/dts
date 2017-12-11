@@ -24,11 +24,11 @@
                 <div class="panel-body">
                     {!! Form::open(['route' => ['sessions.update', Hashids::encode($session->id)], 'method' => 'put']) !!}
 
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-md-12">
                                 <p class="alert alert-info">Your session id is <strong>{{ Hashids::encode($session->id) }}</strong></p>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row">
                             <div class="col-md-6">
