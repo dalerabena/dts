@@ -7,47 +7,98 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
+Server requirements
+---------------
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+- PHP >= 7.0.0
+- OpenSSL PHP Extension
+- PDO PHP Extension
+- Mbstring PHP Extension
+- Tokenizer PHP Extension
+- XML PHP Extension
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+How to install
+---------------
+> **Note:** Install [Composer](https://getcomposer.org/) first. Laravel utilizes [Composer](https://getcomposer.org/) to manage its dependencies. 
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+1. Clone this project and install the project dependencies.
 
-## Learning Laravel
+		git clone https://github.com/dalerabena/dts.git
+		composer install
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+2. Copy ```.env.example``` and rename it to ```.env```.
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+3. Generate application encryption key.
 
-## Laravel Sponsors
+		php artisan key:generate
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
+4. Set the following fields on the ```.env``` file.
 
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
+		APP_NAME=****
+		APP_ENV=production
+		
+		DB_DATABASE=****
+		DB_USERNAME=****
+		DB_PASSWORD=****
+		
+		HASHIDS_SALT=****
+		HASHIDS_LENGTH=16
 
-## Contributing
+5. Run migration and database seeder command.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+		php artisan migrate --seed
 
-## Security Vulnerabilities
+6. Create symbolic link from ```public/storage``` to ```storage/app/public```.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+		php artisan storage:link
 
-## License
+6. To run PHPs built in web server.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+		php artisan serve
+
+Directory Structure
+---------------
+```
+/
+|--app/
+|	|--Console/
+|	|--Exceptions/
+|	|--Http/
+|		|--Controllers/
+|		|--Middleware/
+|	|--Providers/
+|--bootstrap/
+|--config/
+|--database/
+|	|--migrations/
+|	|--seeds
+|--public/
+|--resources/
+|--routes/
+|--storage/
+|--tests/
+|--vendor/
+|--.env
+|--.env.example
+|--artisan
+|--composer.json
+|--composer.lock
+|--package.json
+|--phpunit.xml
+|--readme.md
+|--server.php
+|--webpack.mix.js
+|--yarn.lock
+```
+
+* **app/** Default directory where models are stored.
+* **Controllers/** Under ```app/Http``` directory, the ```Controllers``` directory contains the controller files.
+* **bootstrap/** The ```bootstrap``` directory contains the app.php file which bootstraps the framework. This directory also houses a ```cache``` directory which contains framework generated files for performance optimization such as the route and services cache files.
+* **config/** The ```config``` directory contains the configuration files.
+* **database/** The ```database``` directory contains the database migration and seeds files.
+* **public/** The ```public``` directory contains the ```index.php```file which is the entry point  for all requests entering the application and configures autoloading. This directory also houses your assets such as images, JavaScript, and CSS.
+* **resources/** The ```resources``` directory contains the view files.
+* **routes/** The ```routes``` directory contains all the route definitions of the application.
+* **storage/** The ```storage``` directory contains the compiled Blade templates, file based sessions, file caches, and other files generated by the framework
+* **tests/** The ```tests``` directory contains automated tests.
+* **vendor/** The ```vendor``` directory contains the [Composer](https://getcomposer.org/) dependecies.
