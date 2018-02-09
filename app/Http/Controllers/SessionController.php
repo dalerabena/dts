@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Agenda;
+use App\AgendaAttachment;
 use App\Session;
 use App\Proponent;
 use Illuminate\Http\Request;
@@ -79,8 +81,14 @@ class SessionController extends Controller
      * @param  \App\Session  $session
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        if (isset($request->id)) {
+            $agenda_id = Hashids::decode($request->id)[0];
+            $agenda = Agenda::find($agenda_id);
+            $agenda_attachments = AgendaAttachment::find($agenda_id);
+        }
+
         $id = Hashids::decode($id)[0];
 
         $session = Session::find($id);
@@ -91,7 +99,8 @@ class SessionController extends Controller
         $arr = [
             'session' => $session,
             'session_types' => $session_types,
-            'proponents' => $proponents
+            'proponents' => $proponents,
+            'agenda' => isset($agenda) ? $agenda : null
         ];
 
         return view('sessions.show', $arr);

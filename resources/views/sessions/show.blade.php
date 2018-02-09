@@ -79,7 +79,7 @@
                         <thead>
                             <tr>
                                 <th width="5%">#</th>
-                                <th width="25%">Title</th>
+                                <th width="18%">Title</th>
                                 <th width="35%">Proponent/s</th>
                                 <th>Attachment/s</th>
                                 <th>&nbsp;</th>
@@ -111,6 +111,7 @@
                                         </td>
                                         <td>
                                             {!! Form::open(['route' => ['agendas.destroy', Hashids::encode($value->id)], 'method' => 'delete']) !!}
+                                                <a href="{{ route('sessions.show', Hashids::encode($session->id)) . '?id=' . Hashids::encode($value->id) }}" class="btn btn-primary btn-sm">Edit</a>
                                                 {!! Form::submit('Remove', ['class' => 'btn btn-danger btn-sm']) !!}
                                             {!! Form::close() !!}
                                         </td>
@@ -130,25 +131,29 @@
         <div class="col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Add Agenda
+                    {{ is_null($agenda) ? 'Add Agenda' : 'Update Agenda' }}
                 </div>
                 <div class="panel-body">
-                    {!! Form::open(['route' => ['agendas.store', Hashids::encode($session->id)], 'method' => 'post', 'files' => 'true']) !!}
+                    @if ( is_null($agenda) )
+                        {!! Form::open(['route' => ['agendas.store', Hashids::encode($session->id)], 'method' => 'post', 'files' => 'true']) !!}
+                    @else
+                        {!! Form::open(['route' => ['agendas.update', Hashids::encode($agenda->id)], 'method' => 'put', 'files' => 'true']) !!}
+                    @endif
                         {!! Form::hidden('session_id', Hashids::encode($session->id)) !!}
                         <div class="form-group">
                             {!! Form::label('agenda_title', 'Title') !!}
-                            {!! Form::textarea('agenda_title', null, ['class' => 'form-control', 'placeholder' => 'Enter agenda title', 'rows' => '2']) !!}
+                            {!! Form::textarea('agenda_title', is_null($agenda) ? null : $agenda->title, ['class' => 'form-control', 'placeholder' => 'Enter agenda title', 'rows' => '2']) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('agenda_proponents[]', 'Proponent/s') !!}
-                            {!! Form::select('agenda_proponents[]', $proponents, null, ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'proponents']) !!}
+                            {!! Form::select('agenda_proponents[]', $proponents, is_null($agenda) ? null : explode('###', $agenda->proponents), ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'proponents']) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('agenda_attachments', 'Attachment/s') !!}
                             {!! Form::file('agenda_attachments[]', ['multiple']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::submit('Add agenda', ['class' => 'btn btn-primary']) !!}
+                            {!! Form::submit(is_null($agenda) ? 'Add Agenda' : 'Update Agenda', ['class' => 'btn btn-primary']) !!}
                         </div>
                     {!! Form::close() !!}
                 </div>

@@ -39,6 +39,11 @@ class AgendaController extends Controller
      */
     public function store(Request $request)
     {
+        if (is_null($request->agenda_title)  || !isset($request->agenda_proponents)) {
+            $request->session()->flash('alert-warning', '<strong>Oops!</strong> Please check your inputs.');
+            return redirect()->route('sessions.show', $request->session_id);
+        }
+
         $id = Hashids::decode($request->session_id)[0];
 
         DB::beginTransaction();
@@ -103,9 +108,46 @@ class AgendaController extends Controller
      * @param  \App\Agenda  $agenda
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Agenda $agenda)
+    public function update(Request $request, $id)
     {
-        //
+        $id = Hashids::decode($id)[0];
+
+        DB::beginTransaction();
+
+            try {
+                // $agenda = Agenda::create([
+                //     'session_id' => $id,
+                //     'title' => $request->agenda_title,
+                //     'proponents' => count($request->agenda_proponents) > 0 ? implode('###', $request->agenda_proponents) : null
+                // ]);
+
+                $agenda = Agenda::find($id);
+                $agenda->title = $request->agenda_title;
+                $agenda->proponents =  count($request->agenda_proponents) > 0 ? implode('###', $request->agenda_proponents) : null;
+                $agenda->save();
+
+                if (isset($request->agenda_attachments)) {
+                    foreach ($request->agenda_attachments as $key => $attachment) {
+                        $filename = $attachment->getClientOriginalName();
+                        $path = $attachment->store('attachments');
+
+                        AgendaAttachment::create([
+                            'session_id' => $id,
+                            'agenda_id' => $agenda->id,
+                            'filename' => $filename,
+                            'path' => $path
+                        ]);
+                    }
+                }
+
+            } catch (\ValidationException $e) {
+                $request->session()->flash('alert-danger', '<strong>Oops!</strong> Agenda not updated.');
+            }
+
+        DB::commit();
+
+        $request->session()->flash('alert-success', '<strong>Success!</strong> Agenda has been updated.');
+        return redirect()->route('sessions.show', $request->session_id);
     }
 
     /**

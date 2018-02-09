@@ -31,12 +31,12 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        {!! Form::label('subject_matter', 'Subject Matter') !!}
-                                        {!! Form::textarea('subject_matter', null, ['class' => 'form-control', 'placeholder' => 'Enter subject matter', 'rows' => '2']) !!}
+                                        {!! Form::label('subject_matter', 'Details') !!}
+                                        {!! Form::textarea('subject_matter', null, ['class' => 'form-control', 'placeholder' => 'Enter details', 'rows' => '2']) !!}
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         {!! Form::label('sponsors', 'Sponsor/s') !!}
@@ -44,7 +44,7 @@
                                         {!! Form::select('sponsors[]', $sponsors, null, ['class' => 'form-control', 'multiple' => 'multiple', 'id' => 'sponsors']) !!}
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="col-lg-6">
                             <div class="row">
@@ -55,14 +55,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
                                         {!! Form::label('sp_actions', 'SP Action/s') !!}
                                         {!! Form::textarea('sp_actions', null, ['class' => 'form-control', 'placeholder' => 'Enter sp action/s', 'rows' => '2']) !!}
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
