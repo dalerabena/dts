@@ -110,16 +110,16 @@
                                             </ul>
                                         </td>
                                         <td>
-                                            {!! Form::open(['route' => ['agendas.destroy', Hashids::encode($value->id)], 'method' => 'delete']) !!}
+                                            {!! Form::open(['route' => ['agendas.destroy', Hashids::encode($value->id)], 'method' => 'delete', 'class' => 'pull-right']) !!}
                                                 <a href="{{ route('sessions.show', Hashids::encode($session->id)) . '?id=' . Hashids::encode($value->id) }}" class="btn btn-primary btn-sm">Edit</a>
-                                                {!! Form::submit('Remove', ['class' => 'btn btn-danger btn-sm']) !!}
+                                                {!! Form::submit('Remove', ['class' => 'btn btn-danger btn-sm', 'onclick' => 'return confirm("Are you sure you want to delete this agenda?")']) !!}
                                             {!! Form::close() !!}
                                         </td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="4">No agenda/s to display.</td>
+                                    <td colspan="5">No agenda/s to display.</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -151,11 +151,38 @@
                         <div class="form-group">
                             {!! Form::label('agenda_attachments', 'Attachment/s') !!}
                             {!! Form::file('agenda_attachments[]', ['multiple']) !!}
+                            <small class="text-muted">
+                                <i>Ctrl + Click</i> to select multiple files.
+                            </small>
                         </div>
                         <div class="form-group">
                             {!! Form::submit(is_null($agenda) ? 'Add Agenda' : 'Update Agenda', ['class' => 'btn btn-primary']) !!}
                         </div>
                     {!! Form::close() !!}
+                    @if (!is_null($agenda_attachments) && $agenda_attachments->count() > 0)
+                        <div class="form-group">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th width="75%">Attachment/s</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($agenda_attachments as $key => $agenda_attachment)
+                                        <tr>
+                                            <td><a href="{{ asset("storage/$agenda_attachment->path") }}" target="_blank">{{ $agenda_attachment->filename }}</a></td>
+                                            <td>
+                                                {!! Form::open(['route' => ['agenda_attachment.delete', Hashids::encode($agenda_attachment->id)], 'method' => 'delete']) !!}
+                                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs pull-right', 'onclick' => 'return confirm("Are you sure you want to delete this attachment?")']) !!}
+                                                {!! Form::close() !!}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

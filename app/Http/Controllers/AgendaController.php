@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Agenda;
 use App\AgendaAttachment;
+use App\Session;
 use Illuminate\Http\Request;
 use Hashids;
 use DB;
@@ -111,6 +112,7 @@ class AgendaController extends Controller
     public function update(Request $request, $id)
     {
         $id = Hashids::decode($id)[0];
+        $session_id = Hashids::decode($request->session_id)[0];
 
         DB::beginTransaction();
 
@@ -132,7 +134,7 @@ class AgendaController extends Controller
                         $path = $attachment->store('attachments');
 
                         AgendaAttachment::create([
-                            'session_id' => $id,
+                            'session_id' => $session_id,
                             'agenda_id' => $agenda->id,
                             'filename' => $filename,
                             'path' => $path
@@ -192,5 +194,27 @@ class AgendaController extends Controller
             $request->session()->flash('alert-danger', '<strong>Oops!</strong> Session not found.');
             return redirect()->route('sessions.index');
         }
+    }
+
+    public function deleteAttachment(Request $request, $attachment_id) {
+        $id = Hashids::decode($attachment_id)[0];
+
+        $agenda_attachment = AgendaAttachment::find($id);
+        $session_id = $agenda_attachment->session_id;
+
+        if (is_null($agenda_attachment)) {
+            $request->session()->flash('alert-danger', '<strong>Oops!</strong> Attachment not found.');
+            return redirect()->route('sessions.show', Hashids::encode($agenda_attachment->session_id));
+        }
+
+        $result = $agenda_attachment->delete();
+
+        if ($result) {
+            $request->session()->flash('alert-success', '<strong>Success!</strong> Attachment successfully deleted.');
+        } else {
+            $request->session()->flash('alert-danger', '<strong>Oops!</strong> Attachment not deleted.');
+        }
+
+        return redirect('/sessions/' . Hashids::encode($agenda_attachment->session_id) . '?id=' . Hashids::encode($agenda_attachment->agenda_id));
     }
 }

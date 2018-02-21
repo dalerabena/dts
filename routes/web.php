@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('legislative', 'LegislativeMeasureController');
     Route::resource('sessions', 'SessionController');
     Route::resource('agendas', 'AgendaController');
+    Route::delete('agenda_attachment/{attachment_id}', 'AgendaController@deleteAttachment')->name('agenda_attachment.delete');
 
     Route::group(['prefix' => 'forms'], function() {
         Route::resource('franform', 'FranformController');

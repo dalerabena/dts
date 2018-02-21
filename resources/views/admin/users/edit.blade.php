@@ -5,7 +5,10 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit Office</div>
+                <div class="panel-heading">
+                    Edit Office
+                    <button id="change-pass-togg" type="button" class="btn btn-primary btn-xs pull-right" data-toggle="button" aria-pressed="false" autocomplete="off">Change Password</button>
+                </div>
 
                 <div class="panel-body">
                     @include('partials.message')
@@ -40,33 +43,31 @@
                             </div>
                         </div>
 
-                        <hr>
+                        <div id="change-password" style="display: none;">
+                            <hr>
 
-                        <p class="bg-danger text-danger text-center">
-                            <strong>Note: </strong>
-                            Change password only if you need to.
-                        </p>
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <label for="password" class="col-md-4 control-label">Password</label>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password">
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
+                            <div class="form-group">
+                                <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                                <div class="col-md-6">
+                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
+                                </div>
                             </div>
+
                         </div>
 
                         <div class="form-group">
@@ -84,3 +85,20 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $('#change-pass-togg').click(function() {
+            var pressed = $('#change-pass-togg').attr('aria-pressed');
+            if (pressed == 'false') {
+                $('#change-password').slideDown(350, 'swing', function() {
+                    $('#change-password').show();
+                });
+            } else {
+                $('#change-password').slideUp(350, 'swing', function() {
+                    $('#change-password').hide();
+                });
+            }
+        });
+    </script>
+@endpush

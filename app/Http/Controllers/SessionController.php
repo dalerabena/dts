@@ -86,7 +86,7 @@ class SessionController extends Controller
         if (isset($request->id)) {
             $agenda_id = Hashids::decode($request->id)[0];
             $agenda = Agenda::find($agenda_id);
-            $agenda_attachments = AgendaAttachment::find($agenda_id);
+            $agenda_attachments = AgendaAttachment::where('agenda_id', $agenda_id)->get();
         }
 
         $id = Hashids::decode($id)[0];
@@ -100,7 +100,8 @@ class SessionController extends Controller
             'session' => $session,
             'session_types' => $session_types,
             'proponents' => $proponents,
-            'agenda' => isset($agenda) ? $agenda : null
+            'agenda' => isset($agenda) ? $agenda : null,
+            'agenda_attachments' => isset($agenda_attachments) ? $agenda_attachments : null
         ];
 
         return view('sessions.show', $arr);
